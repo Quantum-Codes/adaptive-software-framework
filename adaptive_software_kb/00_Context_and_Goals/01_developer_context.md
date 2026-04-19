@@ -20,6 +20,15 @@ This file exists to prevent that failure mode entirely. By capturing context upf
 
 When interacting with a developer, you must resolve all of the following dimensions. For each dimension, a set of guiding questions is provided. If the developer's initial prompt already answers a dimension unambiguously, mark it as resolved and do not ask again. Only ask about dimensions that are genuinely unclear.
 
+### Dimension 0: Problem Statement & Current Architecture Baseline
+This establishes why the software exists and what architecture is in place today.
+
+Guiding questions:
+- What exact problem are you solving with this software?
+- What is the current architecture? Provide a concise snapshot (for example: monolith vs microservices, major modules, request flow, data flow, and key dependencies).
+
+Why this matters: Without a clear problem statement and architecture baseline, agents optimize the wrong bottleneck, propose incompatible integration points, and produce low-value changes. This dimension anchors all downstream routing and implementation decisions.
+
 ### Dimension 1: Application Type & Deployment Target
 This determines the fundamental lifecycle model of the application and which platform APIs are available.
 
@@ -94,6 +103,7 @@ Guiding questions:
 
 Why this matters: A greenfield project can implement all four modules simultaneously with clean architecture from the start. A brownfield project must be sequenced carefully — the Feature Tagging audit (`02_Assessment_and_Tagging/01_feature_tagging.md`) must be completed before any Flipper or Monitor code is written, otherwise the system is built on top of untagged, untrackable code. Tightly coupled code may also require the developer to refactor specific areas before adaptation logic can be applied.
 
+
 ---
 
 ## PHASE 3: CONTEXT INTAKE PROTOCOL
@@ -102,13 +112,17 @@ When a developer first engages with this framework, you must execute the followi
 
 **Step 1 — Scan the initial prompt for resolved dimensions.** If the developer writes "I'm building a React/Node.js web app with PostgreSQL," Dimensions 1, 2, 3, and 4 are partially or fully resolved. Extract and record them. Do not ask the developer to repeat information they have already given.
 
-**Step 2 — Identify unresolved critical dimensions.** Dimensions 1 through 5 are critical: an incorrect assumption about any of them will produce wrong code. Dimensions 6 and 7 are contextual: they influence quality and sequencing but a wrong assumption is recoverable.
+**Step 2 — Identify unresolved critical dimensions.** Dimensions 0 through 5 are critical: an incorrect assumption about any of them will produce wrong code. Dimensions 6 and 7 are contextual: they influence quality and sequencing but a wrong assumption is recoverable.
 
 **Step 3 — Ask only for what you need, in a single message.** Do not interrogate the developer across multiple rounds of single questions. Consolidate all unresolved critical dimensions into one structured intake message. Frame questions as multiple-choice where possible to reduce the developer's effort.
 
+**Mandatory intake directive:** If not already provided, you MUST ask the developer to explicitly state:
+- The problem they are solving with this software.
+- The current architecture baseline.
+
 **Step 4 — Confirm the Project Context Summary.** Before routing to any implementation file, output the completed summary (see Phase 4 below) and explicitly state: "I'll proceed with this context. If anything looks wrong, correct me now before I generate code."
 
-**Step 5 — Hand off to the Router.** Attach the Project Context Summary to all downstream agent calls. Every implementation agent in this knowledgebase must have access to it.
+**Step 5 — Hand off to the Router.** Persist the Project Context Summary in shared memory so downstream agents read it instead of receiving it via prompt attachment. Write the canonical summary to `04_Memory_and_Context/01_Working_Memory/01_active_task_state.md` and place any overflow/raw structured data in `04_Memory_and_Context/01_Working_Memory/02_inter_agent_scratchpad.md`.
 
 ---
 
@@ -185,8 +199,9 @@ Do not generate any code, pseudocode, database schemas, or architectural diagram
 ## PHASE 6: EXECUTION
 
 1. Scan the developer's initial message for any pre-resolved context dimensions (Phase 2).
-2. Identify all unresolved critical dimensions (Dimensions 1–5) and consolidate them into a single intake question if needed.
-3. Once all critical dimensions are resolved, populate the Project Context Summary schema (Phase 4).
-4. Output the summary and await the developer's confirmation or correction.
-5. On confirmation, output the handoff statement and cease execution of this file.
-6. **ATTACH THE PROJECT CONTEXT SUMMARY TO ALL SUBSEQUENT AGENT CALLS IN THIS SESSION.**
+2. Identify all unresolved critical dimensions (Dimensions 0–5) and consolidate them into a single intake question if needed.
+3. Ensure the developer has explicitly provided both the problem statement and current architecture baseline before routing.
+4. Once all critical dimensions are resolved, populate the Project Context Summary schema (Phase 4).
+5. Output the summary and await the developer's confirmation or correction.
+6. On confirmation, output the handoff statement and cease execution of this file.
+7. **PERSIST THE PROJECT CONTEXT SUMMARY IN SHARED MEMORY AND REQUIRE ALL SUBSEQUENT SUBAGENTS TO READ IT DURING MEMORY BOOTSTRAP.**
