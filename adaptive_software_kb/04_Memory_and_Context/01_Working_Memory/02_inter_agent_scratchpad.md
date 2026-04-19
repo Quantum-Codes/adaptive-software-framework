@@ -7,6 +7,7 @@ Use this file for temporary handoff data that should not be recomputed.
 - Always use fenced code blocks for payloads.
 - Prefix each payload with timestamp and source/target agent roles.
 - Keep this file short; prune stale blocks after successful handoff.
+- Write only handoff-critical structured data; do not duplicate information already present in active task state or action log.
 
 ## Example Payload
 Source: UI Agent

@@ -131,4 +131,6 @@ Before routing any new task, the Orchestrator Agent MUST execute a memory bootst
 2. Read `04_Memory_and_Context/01_Working_Memory/03_action_log.md` to recover prior actions and avoid repeated loops.
 3. If resuming an unfinished mission, load `04_Memory_and_Context/01_Working_Memory/01_active_task_state.md` and continue from the latest unchecked item.
 
+Memory writes must be minimal and purposeful: only record state transitions, handoff-critical data, major decisions, or failures. Do not append entries for no-op progress.
+
 Do not begin routing until this state recovery is complete.

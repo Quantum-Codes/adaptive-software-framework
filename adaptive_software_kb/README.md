@@ -35,7 +35,7 @@ To prevent token exhaustion, the system strictly separates the "Thinking" from t
 * **Responsibilities:**
   * Receives a highly restricted context window (e.g., `Nav.jsx` + `01_frontend_dom.md`).
   * Executes the refactoring (e.g., wrapping components in Feature Gates, stripping stray event listeners).
-  * Updates the `action_log.md` and dies.
+  * Reads shared memory bootstrap files before execution, and writes memory only when there is a meaningful new outcome (state transition, decision, blocker, or failure).
   * **Benefit:** Because the Orchestrator isolated the files, there are **no overlapping file reads**. Subagent A (UI) and Subagent B (Backend) never ingest each other's code files, saving thousands of tokens.
 
 ### **The Execution Flow**
@@ -44,7 +44,7 @@ To prevent token exhaustion, the system strictly separates the "Thinking" from t
 3. **Map & Route:** Orchestrator queries `codebase_map.md` -> finds `ReportView.tsx` and `reportController.ts`. 
 4. **Dispatch:** * Orchestrator spawns **UI_Agent** with `ReportView.tsx` + `01_frontend_dom.md`.
    * Orchestrator spawns **API_Agent** with `reportController.ts` + `02_backend_api.md`.
-5. **Commit:** Subagents write the code, log their success in `action_log.md`, and terminate. Orchestrator verifies and closes the task.
+5. **Commit:** Subagents write the code, append one concise action-log entry only if outcome changed, and terminate. Orchestrator verifies and closes the task.
 
 ---
 
@@ -54,8 +54,8 @@ Standard agents suffer from "Context Amnesia" or "Context Bloat." Our system imp
 ### **A. Working Memory (Short-Term)**
 Wiped or archived when a task completes.
 * **`active_task_state.md`:** The current checklist. (Read/Write by Orchestrator; Read by Subagents).
-* **`inter_agent_scratchpad.md`:** Temporary data handoffs (e.g., UI Agent extracts a required API endpoint and leaves it here for the Backend Agent). (Read/Write by all).
-* **`action_log.md` (Episodic Memory):** An immutable ledger of completed milestones `[Timestamp | Agent | Action | Outcome]`. Prevents infinite loops and allows the Orchestrator to resume perfectly if the script crashes. (Write by Subagents; Read by Orchestrator).
+* **`inter_agent_scratchpad.md`:** Temporary data handoffs (e.g., UI Agent extracts a required API endpoint and leaves it here for the Backend Agent). Write only when structured data is needed for handoff. (Read/Write by all).
+* **`action_log.md` (Episodic Memory):** An immutable ledger of completed milestones `[Timestamp | Agent | Action | Outcome]`. Prevents infinite loops and allows the Orchestrator to resume perfectly if the script crashes. Log only meaningful milestones; avoid no-op entries. (Write by Subagents; Read by Orchestrator).
 
 ### **B. Learned Meta-Context (Long-Term)**
 Persists across the entire lifecycle of the software.

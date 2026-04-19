@@ -122,7 +122,7 @@ When a developer first engages with this framework, you must execute the followi
 
 **Step 4 — Confirm the Project Context Summary.** Before routing to any implementation file, output the completed summary (see Phase 4 below) and explicitly state: "I'll proceed with this context. If anything looks wrong, correct me now before I generate code."
 
-**Step 5 — Hand off to the Router.** Persist the Project Context Summary in shared memory so downstream agents read it instead of receiving it via prompt attachment. Write the canonical summary to `04_Memory_and_Context/01_Working_Memory/01_active_task_state.md` and place any overflow/raw structured data in `04_Memory_and_Context/01_Working_Memory/02_inter_agent_scratchpad.md`.
+**Step 5 — Hand off to the Router.** Persist the Project Context Summary in shared memory so downstream agents read it instead of receiving it via prompt attachment. Write the canonical summary to `04_Memory_and_Context/01_Working_Memory/01_active_task_state.md` and place any overflow/raw structured data in `04_Memory_and_Context/01_Working_Memory/02_inter_agent_scratchpad.md`. Do not rewrite unchanged summaries; update only when context changed.
 
 ---
 
@@ -204,4 +204,4 @@ Do not generate any code, pseudocode, database schemas, or architectural diagram
 4. Once all critical dimensions are resolved, populate the Project Context Summary schema (Phase 4).
 5. Output the summary and await the developer's confirmation or correction.
 6. On confirmation, output the handoff statement and cease execution of this file.
-7. **PERSIST THE PROJECT CONTEXT SUMMARY IN SHARED MEMORY AND REQUIRE ALL SUBSEQUENT SUBAGENTS TO READ IT DURING MEMORY BOOTSTRAP.**
+7. **PERSIST THE PROJECT CONTEXT SUMMARY IN SHARED MEMORY AND REQUIRE ALL SUBSEQUENT SUBAGENTS TO READ IT DURING MEMORY BOOTSTRAP. ONLY WRITE UPDATES WHEN CONTEXT CHANGES OR NEW CONSTRAINTS ARE DISCOVERED.**

@@ -10,6 +10,8 @@ This file defines how all agents read and write memory across working and long-t
 1. Keep each entry under 3 sentences.
 2. Never use ls or tree for discovery; always query `03_Subagent_Learnings/03_codebase_map.md` first.
 3. Append only for logs and learnings; never overwrite historical entries unless cleaning `01_Working_Memory/02_inter_agent_scratchpad.md`.
+4. Write to memory only for meaningful updates: state transitions, handoffs, key decisions, blockers, failures, or durable quirks.
+5. Do not append duplicate or no-op entries.
 
 ## Startup Sequence
 1. Read this protocol.
@@ -20,6 +22,7 @@ This file defines how all agents read and write memory across working and long-t
 - Use UTC timestamps.
 - Keep lines actionable and specific.
 - If uncertain, write a short note in scratchpad rather than editing long-term learnings.
+- If there is no meaningful delta, write nothing.
 
 ## Example Entry
 - [2026-04-19T10:00:00Z] Protocol check complete. Routing can begin. No overwrite actions performed.

@@ -3,6 +3,8 @@
 **[SYSTEM DIRECTIVE - ACTIVE TASK STATE]**
 This file is the current mission brief and handoff anchor.
 
+Update policy: modify this file only when goal, phase, checklist status, or handoff status changes.
+
 ## Template
 ### Current Goal
 - 

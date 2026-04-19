@@ -12,6 +12,7 @@ Before classifying any request, load state in this exact order:
 1. READ: `04_Memory_and_Context/00_memory_protocol.md`
 2. READ: `04_Memory_and_Context/01_Working_Memory/03_action_log.md`
 3. If an unfinished flow exists, READ: `04_Memory_and_Context/01_Working_Memory/01_active_task_state.md`
+4. If a structured handoff exists, READ: `04_Memory_and_Context/01_Working_Memory/02_inter_agent_scratchpad.md`
 
 Do not route until state recovery is complete.
 
@@ -19,11 +20,12 @@ Do not route until state recovery is complete.
 
 ## PHASE 1: REQUEST CLASSIFICATION
 
-Classify the user's request into one of four categories:
+Classify the user's request into one of five categories:
 1. Core adaptation infrastructure setup.
 2. Codebase assessment and Feature ID assignment.
 3. Frontend/client runtime optimization.
 4. Backend/data/worker optimization.
+5. Memory and orchestration state management.
 
 ---
 
@@ -105,14 +107,16 @@ For full-feature adaptation requests, route to combined files:
 2. Load only those files.
 3. Implement only after those files are ingested.
 4. Do not scan unrelated files.
-5. Append outcomes to `04_Memory_and_Context/01_Working_Memory/03_action_log.md`.
-6. Update `04_Memory_and_Context/01_Working_Memory/01_active_task_state.md` before handoff.
+5. Append one action-log line only if there is a meaningful state transition, decision, blocker, failure, or completed handoff.
+6. Update `04_Memory_and_Context/01_Working_Memory/01_active_task_state.md` only when goal, phase, checklist, or handoff status changed.
 
 ## PHASE 5: SUBAGENT SPAWNING POLICY
 
 If a subagent is used, enforce all of the following:
 1. Spawn only after routing selects the minimal file set.
-2. Pass the Project Context Summary and only routed file content/summaries.
+2. Require the subagent to read Project Context Summary from shared memory (`01_active_task_state.md` and, if needed, `02_inter_agent_scratchpad.md`) instead of prompt attachment.
 3. Do not allow recursive subagent fan-out unless explicitly requested by the user.
 4. Prefer one focused subagent task per request domain (UI, API, DB, or jobs).
 5. If confidence is low, ask one clarification instead of spawning multiple broad searches.
+6. Subagents must follow memory bootstrap before implementation.
+7. Subagents must not write to memory when there is no meaningful delta.
