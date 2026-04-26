@@ -1,5 +1,9 @@
 # Adaptive Software Architecture Knowledgebase
 
+**Final report**: https://github.com/Quantum-Codes/adaptive-software-framework/blob/main/SE_release_2.pdf <br>
+
+**Deliverables**: `adaptive_software_kb/` folder with 23 markdown files covering the full implementation guide for adaptive software architecture, including multi-agent orchestration and memory system design. The other folders are mere demos to prove the working and are not the actual deliverables.
+
 ## Summary of the Knowledgebase
 
 This knowledgebase is an agent-ready implementation guide for turning existing software into an adaptive system using feature flags, architectural discipline, and measurable performance evidence.
