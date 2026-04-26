@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0",
+  "userId": "template-user-id",
+  "lastEvaluated": "1970-01-01T00:00:00.000Z",
+  "lockedFeatures": [
+    "ID_NAV_TOPBAR",
+    "ID_AUTH_LOGIN",
+    "ID_AUTH_REGISTER",
+    "ID_AUTH_LOGOUT",
+    "ID_APP_SETTINGS",
+    "ID_RESTORE_HIDDEN_FEATURES",
+    "ID_ERROR_BOUNDARY"
+  ],
+  "features": {
+    "ID_NAV_TOPBAR": true,
+    "ID_AUTH_LOGIN": true,
+    "ID_AUTH_REGISTER": true,
+    "ID_AUTH_LOGOUT": true,
+    "ID_APP_SETTINGS": true,
+    "ID_RESTORE_HIDDEN_FEATURES": true,
+    "ID_ERROR_BOUNDARY": true,
+    "ID_DISCOVERY_POPULAR_TAGS": true,
+    "ID_FEED_PERSONAL": true,
+    "ID_PROFILE_FAVORITED_ARTICLES": true,
+    "ID_ARTICLE_COMMENTS": true
+  }
+}

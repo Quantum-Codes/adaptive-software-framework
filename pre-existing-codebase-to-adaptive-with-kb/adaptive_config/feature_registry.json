@@ -1,0 +1,155 @@
+[
+  {
+    "featureId": "ID_NAV_TOPBAR",
+    "displayName": "Top Navigation",
+    "description": "Primary navigation links in the top bar.",
+    "category": "heavy-ui-component",
+    "isLocked": true,
+    "primaryEntryPoints": [
+      "frontend/src/components/Navbar/Navbar.jsx",
+      "frontend/src/components/NavItem/NavItem.jsx"
+    ],
+    "notes": "Core navigation must remain available."
+  },
+  {
+    "featureId": "ID_AUTH_LOGIN",
+    "displayName": "Login",
+    "description": "User login entry point.",
+    "category": "heavy-ui-component",
+    "isLocked": true,
+    "primaryEntryPoints": [
+      "frontend/src/components/Navbar/Navbar.jsx",
+      "frontend/src/routes/Login.jsx"
+    ],
+    "notes": "Authentication flow must remain available."
+  },
+  {
+    "featureId": "ID_AUTH_REGISTER",
+    "displayName": "Registration",
+    "description": "User sign-up entry point.",
+    "category": "heavy-ui-component",
+    "isLocked": true,
+    "primaryEntryPoints": [
+      "frontend/src/components/Navbar/Navbar.jsx",
+      "frontend/src/routes/SignUp.jsx"
+    ],
+    "notes": "Authentication flow must remain available."
+  },
+  {
+    "featureId": "ID_AUTH_LOGOUT",
+    "displayName": "Logout",
+    "description": "User logout action from account menu.",
+    "category": "heavy-ui-component",
+    "isLocked": true,
+    "primaryEntryPoints": [
+      "frontend/src/components/Navbar/DropdownMenu.jsx"
+    ],
+    "notes": "Authentication flow must remain available."
+  },
+  {
+    "featureId": "ID_APP_SETTINGS",
+    "displayName": "Settings",
+    "description": "User settings screen and profile updates.",
+    "category": "heavy-ui-component",
+    "isLocked": true,
+    "primaryEntryPoints": [
+      "frontend/src/routes/Settings.jsx",
+      "frontend/src/components/SettingsForm/SettingsForm.jsx"
+    ],
+    "notes": "Recovery and profile control must remain available."
+  },
+  {
+    "featureId": "ID_RESTORE_HIDDEN_FEATURES",
+    "displayName": "Restore Hidden Features",
+    "description": "Panel to re-enable adaptive features manually.",
+    "category": "heavy-ui-component",
+    "isLocked": true,
+    "primaryEntryPoints": [
+      "frontend/src/components/HiddenFeaturesManager/HiddenFeaturesManager.jsx"
+    ],
+    "notes": "Must never be disabled to preserve recoverability."
+  },
+  {
+    "featureId": "ID_ERROR_BOUNDARY",
+    "displayName": "Error UI",
+    "description": "Error handling and graceful fallback surface.",
+    "category": "heavy-ui-component",
+    "isLocked": true,
+    "primaryEntryPoints": [
+      "backend/middleware/errorHandler.js",
+      "frontend/src/routes/NotFound.jsx"
+    ],
+    "notes": "Safety fallback must always exist."
+  },
+  {
+    "featureId": "ID_DISCOVERY_POPULAR_TAGS",
+    "displayName": "Popular Tags Sidebar",
+    "description": "Home sidebar that fetches and renders popular tags.",
+    "category": "heavy-ui-component",
+    "isLocked": false,
+    "primaryEntryPoints": [
+      "frontend/src/routes/Home.jsx",
+      "frontend/src/components/PopularTags/PopularTags.jsx",
+      "frontend/src/components/PopularTags/TagButton.jsx"
+    ],
+    "heavyDependencies": [],
+    "estimatedRAMImpact": "~8 MB when active",
+    "adaptationThreshold": 3,
+    "notes": "Disabled via frontend gate; no sidebar fetch when hidden."
+  },
+  {
+    "featureId": "ID_FEED_PERSONAL",
+    "displayName": "Personal Feed",
+    "description": "Authenticated feed based on followed authors.",
+    "category": "heavy-api-computation",
+    "isLocked": false,
+    "primaryEntryPoints": [
+      "frontend/src/components/FeedToggler/FeedToggler.jsx",
+      "frontend/src/context/FeedContext.jsx",
+      "backend/routes/articles.js"
+    ],
+    "heavyDependencies": [
+      "Article feed query"
+    ],
+    "estimatedRAMImpact": "~12 MB across API + client state",
+    "adaptationThreshold": 3,
+    "notes": "Route-level backend gating returns early when disabled."
+  },
+  {
+    "featureId": "ID_PROFILE_FAVORITED_ARTICLES",
+    "displayName": "Favorited Articles Tab",
+    "description": "Profile tab and API filter for favorited articles.",
+    "category": "heavy-api-computation",
+    "isLocked": false,
+    "primaryEntryPoints": [
+      "frontend/src/routes/Profile/Profile.jsx",
+      "frontend/src/routes/Profile/ProfileFavArticles.jsx",
+      "backend/controllers/articles.js"
+    ],
+    "heavyDependencies": [
+      "Favorites query path"
+    ],
+    "estimatedRAMImpact": "~10 MB when active",
+    "adaptationThreshold": 2,
+    "notes": "Controller-level query gating avoids favorites DB path."
+  },
+  {
+    "featureId": "ID_ARTICLE_COMMENTS",
+    "displayName": "Article Comments",
+    "description": "Comment fetch/create/delete and comments UI.",
+    "category": "heavy-api-computation",
+    "isLocked": false,
+    "primaryEntryPoints": [
+      "frontend/src/routes/Article/Article.jsx",
+      "frontend/src/components/CommentEditor/CommentEditor.jsx",
+      "frontend/src/components/CommentList/CommentList.jsx",
+      "backend/routes/articles/comments.js"
+    ],
+    "heavyDependencies": [
+      "Comments DB read/write path"
+    ],
+    "estimatedRAMImpact": "~9 MB when active",
+    "adaptationThreshold": 3,
+    "notes": "Route-level middleware blocks comment endpoints when disabled."
+  }
+]
