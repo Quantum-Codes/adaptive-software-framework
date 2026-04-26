@@ -1,0 +1,31 @@
+class FlipperEngine {
+  #flags = {};
+
+  #initialized = false;
+
+  init(schema) {
+    this.#flags = schema?.features || {};
+    this.#initialized = true;
+  }
+
+  isActive(featureId) {
+    if (!this.#initialized) return true;
+    if (this.#flags[featureId] === undefined) return true;
+
+    return this.#flags[featureId];
+  }
+
+  getAllFlags() {
+    return Object.freeze({ ...this.#flags });
+  }
+
+  overrideFlag(featureId, state) {
+    if (typeof state !== "boolean") return;
+    this.#flags[featureId] = state;
+  }
+}
+
+const Flipper = new FlipperEngine();
+
+export default Flipper;
+
